@@ -1,25 +1,25 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart, NavigationError, NavigationCancel } from '@angular/router';
-import { GoogleAnalyticsService } from './google-analytics.service';
-
+import { GoogleAnalyticsService } from './google-analytics.service'; 
 
 @Component({
-  selector: 'lib-google-analytics',
+  selector: 'lib-google-analytics[ga]',
   // https://developers.google.com/analytics/devguides/collection/gtagjs
   template: `<!-- Global site tag (gtag.js) - Google Analytics -->`,
   styles: []
 })
 export class GoogleAnalyticsComponent implements OnInit {
 
-  public _id: string;
+  private _id: string = "";
 
   @Input()
-  set id(id: string) {
+  public set ga(id: string) {
+    console.log("definindo o ID");
+    console.log(id);
     this._id = id;
   }
 
-  constructor(private service: GoogleAnalyticsService, private router: Router) {
-  }
+  constructor(private service: GoogleAnalyticsService, private router: Router) {}
 
   ngOnInit() {
     this.service.loadScript(this._id).then(() => {
