@@ -1,35 +1,45 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart, NavigationError, NavigationCancel } from '@angular/router';
 import { GoogleAnalyticsService } from './google-analytics.service';
 
-declare let gtag: Function;
-declare let ga: Function;
 
 @Component({
   selector: 'lib-google-analytics',
-  template: `<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id={{id}}"></script>`,
+  // https://developers.google.com/analytics/devguides/collection/gtagjs
+  template: `<!-- Global site tag (gtag.js) - Google Analytics -->`,
   styles: []
 })
 export class GoogleAnalyticsComponent implements OnInit {
 
+  public _id: string;
+
   @Input()
-  public id: string;
+  set id(id: string) {
+    this._id = id;
+  }
 
   constructor(private service: GoogleAnalyticsService, private router: Router) {
-    this.service.js = new Date();
   }
 
   ngOnInit() {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        console.log('config');
-        (<any>window).gtag('config', this.id,
-          {
-            'page_path': event.urlAfterRedirects
-          }
-        );
-      }
+    this.service.loadScript(this._id).then(() => {
+      //https://developers.google.com/analytics/devguides/collection/gtagjs/screens
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationError) {
+          console.log('Navigation Error');
+        } else if (event instanceof NavigationCancel) {
+          console.log('Navigation Cancel');
+        } else if (event instanceof NavigationStart) {
+          console.log('Navigation Start');
+        } else if (event instanceof NavigationEnd) {
+          console.log('Navigation End');
+          (<any>window).gtag('config', this._id,
+            {
+              'page_path': event.urlAfterRedirects
+            }
+          );
+        }
+      });
     });
   }
 
