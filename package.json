@@ -1,6 +1,25 @@
 {
-  "name": "google-analytics",
-  "version": "0.0.1",
+  "name": "@streetpet/google-analytics",
+  "version": "0.0.2",
+  "homepage": "https://github.com/streetpet/AngularGoogleAnalytics",
+  "author": {
+    "name": "carlosdelfino",
+    "url": "https://github.com/streetpet/AngularGoogleAnalytics"
+  },
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "contributors": [
+    {
+      "name": "Carlos Delfino",
+      "url": "https://github.com/CarlosDelfino"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/streetpet/AngularGoogleAnalytics.git"
+  },
+  "bugs": {
+    "url": "https://github.com/streetpet/AngularGoogleAnalytics/issues"
+  },
   "peerDependencies": {
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14"
